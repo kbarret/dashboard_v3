@@ -1,8 +1,4 @@
-void displayTime(){ //Screen 1 
-  clearLCD(1);
-  displayHour();
-  displayDate();
-}
+
 // Call the EMUcan lib with every received frame:
 if (mcp2515.readMessage(&canMsg) == MCP2515::ERROR_OK) {
   emucan.checkEMUcan(canMsg.can_id, canMsg.can_dlc, canMsg.data);
@@ -13,6 +9,20 @@ currentMillis = millis();
 if (currentMillis - previousMillis >= interval) {
   previousMillis = currentMillis;
   if (emucan.EMUcan_Status() == EMUcan_RECEIVED_WITHIN_LAST_SECOND) || testDisplay == true {
+    
+    void displayTime(){ //Screen 1 
+      clearLCD(1);
+      displayHour();
+      displayDate();
+      cursor(14,0);
+      lcd.print("MODE:");      
+      if (emucan.emu_data.flags1 & emucan.F_TABLE_SET) {
+        lcd.print("H");     
+      }
+      else{
+        lcd.print("S"); 
+      }
+    }
     
     void displayPerf1(){ //Screen 2
       clearLCD(2);
@@ -25,22 +35,32 @@ if (currentMillis - previousMillis >= interval) {
       lcd.print(emucan.emu_data.lambdaTarget);
       
       cursor(0,2);
-      lcd.print("MAP:");
-      lcd.print(emucan.emu_data.MAP);
-      if(emucan.emu_data.MAP < 100){
+      lcd.print("CLT:");
+      lcd.print(emucan.emu_data.CLT);
+      if(emucan.emu_data.CLT < 100){
         lcd.print(" ");
+      }
+      if(emucan.emu_data.CLT < 10){
+        lcd.print(" ");
+      }
+      cursor(0,3);
+      lcd.print("EGT:");
+      lcd.print(emucan.emu_data.Egt1); 
+      
+      cursor(14,0);
+      lcd.print("MODE:");      
+      if (emucan.emu_data.flags1 & emucan.F_TABLE_SET) {
+        lcd.print("H");     
+      }
+      else{
+        lcd.print("S"); 
       }
       
-      cursor(0,3);
-      lcd.print("IAT:");
-      lcd.print(emucan.emu_data.IAT);
-      if(emucan.emu_data.IAT < 100){
-        lcd.print(" ");
-      }
-      if(emucan.emu_data.IAT < 10){
-        lcd.print(" ");
-      } 
+      cursor(14,1);
+      lcd.print("GEAR:");      
+      lcd.print(emucan.emu_data.gear);
     }
+    
     void displayPerf2(){ //Screen 3
       clearLCD(3); 
       
@@ -68,12 +88,9 @@ if (currentMillis - previousMillis >= interval) {
       }
           
       cursor(0,2);
-      lcd.print("CLT:");
-      lcd.print(emucan.emu_data.CLT);
-      if(emucan.emu_data.CLT < 100){
-        lcd.print(" ");
-      }
-      if(emucan.emu_data.CLT < 10){
+      lcd.print("MAP:");
+      lcd.print(emucan.emu_data.MAP);
+      if(emucan.emu_data.MAP < 100){
         lcd.print(" ");
       }
       
