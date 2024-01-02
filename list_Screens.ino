@@ -158,5 +158,9 @@ if (currentMillis - previousMillis >= interval) {
 else {
   lcd.clear
   cursor(0,0);
-  lcd.print("No communication");
+  for(int i = 0;i < 4;i++){
+    lcd.print("No communication");
+    delay(800);
+    lcd.clear;
+  } 
 }
