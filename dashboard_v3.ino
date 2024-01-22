@@ -47,7 +47,7 @@ double consoAverage = 0;
 int speedVss = 0;
 int rpm = 0;
 
-const int injectorSize = 410;
+const int injectorSize = 320;
 
 void setup() {
     
